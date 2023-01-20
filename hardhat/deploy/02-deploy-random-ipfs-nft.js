@@ -4,6 +4,9 @@ const {
   networkConfig,
 } = require("../helper-hardhat-config");
 const { verify } = require("../utils/verify");
+const { storeImages } = require("../utils/uploadToPinata");
+
+const imagesLocation = "./images/random";
 
 module.exports = async function ({ getNamedAccounts, deployments }) {
   const { deploy, log } = deployments;
@@ -35,13 +38,14 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
 
   log("----------------------------------------------");
 
-  const args = [
-    vrfCoordinatorV2Address,
-    subscriptionId,
-    networkConfig[chainId].gasLane,
-    networkConfig[chainId].mintFee,
-    networkConfig[chainId].callbackGasLimit,
-  ];
+  await storeImages(imagesLocation);
+  // const args = [
+  //   vrfCoordinatorV2Address,
+  //   subscriptionId,
+  //   networkConfig[chainId].gasLane,
+  //   networkConfig[chainId].mintFee,
+  //   networkConfig[chainId].callbackGasLimit,
+  // ];
 };
 
 async function handleTokenUris() {
@@ -52,3 +56,5 @@ async function handleTokenUris() {
 
   return tokenUris;
 }
+
+module.exports.tags = ["all", "randomipfs", "main"];
